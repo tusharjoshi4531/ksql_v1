@@ -39,3 +39,4 @@ SortIncludes: false
 SpaceBeforeParens: Never
 SpacesInContainerLiterals: false
 Standard:        Cpp11
+

@@ -7,9 +7,9 @@
 #include <iostream>
 
 namespace data {
-  Chars::Chars() { this->len = 0; }
-  Chars::Chars(int32_t len) { this->len = len; }
-  Chars::Chars(int32_t len, std::string str) {
+  Chars::Chars() : DataType(CHARS) { this->len = 0; }
+  Chars::Chars(int32_t len) : DataType(CHARS) { this->len = len; }
+  Chars::Chars(int32_t len, std::string str) : DataType(CHARS) {
     this->len = len;
     this->value = str;
     if(this->value.size() > this->len) {
@@ -37,30 +37,36 @@ namespace data {
   }
 
   void Chars::readBytes(io::ByteVector &bytes) {
-    uint8_t type = io::BytesParser::parseInt8(bytes.begin(),
-                                              bytes.begin() + sizeof(type));
+    auto it = bytes.begin();
+    readBytes(it, bytes.end());
+  }
+
+  void Chars::readBytes(io::ByteVector::iterator &curr,
+                        io::ByteVector::iterator fin) {
+    uint8_t type = io::BytesParser::parseInt8(curr, curr + sizeof(type));
+
     if(type != CHARS) {
       throw std::runtime_error("Data type doesnot match CHARS: "
                                + std::to_string(type));
     }
 
-    auto curr = bytes.begin();
     std::advance(curr, sizeof(type));
 
     int32_t len = io::BytesParser::parseInt32(curr, curr + sizeof(int32_t));
+    int contentSize = sizeof(char) * len;
 
     std::advance(curr, sizeof(int32_t));
 
-    std::string val = io::BytesParser::parseString(curr, bytes.end());
-
-    // std::cout << val << std::endl;
-
-    if(val.size() > len) {
-      std::runtime_error("Size of string is greater than len");
+    if(std::distance(curr, fin) < contentSize) {
+      throw std::runtime_error("Not enough bytes to read CHARS ");
     }
+
+    std::string val = io::BytesParser::parseString(curr, curr + contentSize);
 
     this->len = len;
     this->value = val;
+
+    std::advance(curr, contentSize);
   }
 
   int Chars::getSizeInBytes() {

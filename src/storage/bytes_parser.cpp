@@ -23,7 +23,7 @@ namespace io {
   ByteVector BytesGenerator::convert(uint8_t val) { return {val}; }
 
   int32_t BytesParser::parseInt32(ByteVector &bytes) {
-    if(bytes.size() != sizeof(int)) {
+    if(bytes.size() < sizeof(int)) {
       throw std::runtime_error(
         "Vector size does not match the size of int32_t");
     }
@@ -34,7 +34,7 @@ namespace io {
   }
 
   uint8_t BytesParser::parseInt8(ByteVector &bytes) {
-    if(bytes.size() != sizeof(uint8_t)) {
+    if(bytes.size() < sizeof(uint8_t)) {
       throw std::runtime_error(
         "Vector size does not match the size of uint8_t");
     }
@@ -43,7 +43,7 @@ namespace io {
   }
 
   double BytesParser::parseDouble(ByteVector &bytes) {
-    if(bytes.size() != sizeof(double)) {
+    if(bytes.size() < sizeof(double)) {
       throw std::runtime_error(
         "Vector size does not match the size of double");
     }

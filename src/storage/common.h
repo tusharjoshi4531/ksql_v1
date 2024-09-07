@@ -4,5 +4,5 @@
 #include <cstdint>
 
 namespace io {
-  using ByteVector = std::vector<uint8_t>;
+  typedef std::vector<uint8_t> ByteVector;
 }

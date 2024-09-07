@@ -4,8 +4,10 @@
 
 #include "test/storage/test.h"
 
+
 int main() {
   // test::testDouble();
-  test::testString();
+  // test::testString();
+  test::testStrictDocument();
   return 0;
 }

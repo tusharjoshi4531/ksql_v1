@@ -8,32 +8,56 @@
 #include <iostream>
 
 namespace data {
-  Double::Double() { Double(0); }
-  Double::Double(double val) { this->val = val; }
+  Double::Double() : DataType(DOUBLE) { Double(0); }
+  Double::Double(double val) : DataType(DOUBLE) { this->val = val; }
 
   double Double::getVal() { return this->val; }
 
   io::ByteVector Double::getBytes() {
     DoubleData_t data = {.type = DOUBLE, .value = this->val};
-    int sz = sizeof(data);
+    int dataSize = sizeof(data);
 
-    uint8_t byteArray[sz];
-    std::memcpy(byteArray, &data, sz);
+    uint8_t byteArray[dataSize];
+    std::memcpy(byteArray, &data, dataSize);
 
-    return io::ByteVector(byteArray, byteArray + sz);
+    return io::ByteVector(byteArray, byteArray + dataSize);
   }
 
   void Double::readBytes(io::ByteVector &bytes) {
-    uint8_t type = io::BytesParser::parseInt8(bytes.begin(),
-                                              bytes.begin() + sizeof(type));
+    int typeSize = sizeof(uint8_t);
+    uint8_t type
+      = io::BytesParser::parseInt8(bytes.begin(), bytes.begin() + typeSize);
     if(type != DOUBLE) {
       throw std::runtime_error("Data type doesnot match Double: "
                                + std::to_string(type));
     }
 
-    double val = io::BytesParser::parseDouble(bytes.begin() + sizeof(type),
-                                              bytes.end());
+    double value
+      = io::BytesParser::parseDouble(bytes.begin() + typeSize, bytes.end());
+    this->val = value;
+  }
+
+  void Double::readBytes(io::ByteVector::iterator &curr,
+                         io::ByteVector::iterator fin) {
+    int typeSize = sizeof(uint8_t);
+    int doubleSize = sizeof(double);
+
+    uint8_t type = io::BytesParser::parseInt8(curr, curr + typeSize);
+
+    if(type != DOUBLE) {
+      throw std::runtime_error("Data type doesnot match Double: "
+                               + std::to_string(type));
+    }
+
+    if(std::distance(curr, fin) < this->getSizeInBytes()) {
+      throw std::runtime_error("Insufficient bytes to read Double");
+    }
+    std::advance(curr, typeSize);
+
+    double val = io::BytesParser::parseDouble(curr, fin);
     this->val = val;
+
+    std::advance(curr, doubleSize);
   }
 
   int Double::getSizeInBytes() { return sizeof(DoubleData_t); }

@@ -26,8 +26,6 @@ namespace io {
     auto &config = DataConfig::getInstance();
     long blockSize = config.getBlockSizeBytes();
 
-    // std::cout << blockSize << std::endl;
-
     int n = data.size();
     long dataSize = n * sizeof(uint8_t);
 

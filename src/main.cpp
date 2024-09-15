@@ -2,7 +2,7 @@
 #include <vector>
 #include <cstdint>
 
-#include "test/storage/test.h"
+#include "test/db/test.h"
 
 
 int main() {

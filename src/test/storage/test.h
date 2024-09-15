@@ -7,6 +7,4 @@ namespace test {
   void testGenericDouble();
   void testGenericString();
   void testString();
-  void testStrictDocument();
-  void testPage();
 }

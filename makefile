@@ -15,8 +15,8 @@ build:
 	src/db/strict_document.cpp \
 	src/test/storage/double_test.cpp \
 	src/test/storage/string_test.cpp \
-	src/test/storage/document_test.cpp \
-	src/test/storage/page_test.cpp \
+	src/test/db/document_test.cpp \
+	src/test/db/page_test.cpp \
 	-o main.out
 
 run:

@@ -33,15 +33,15 @@ namespace db {
     this->values[key] = value;
   }
 
-  int StrictDocument::getContentSize() {
-    int contentSize = 0;
+  uint32_t StrictDocument::getContentSize() {
+    uint32_t contentSize = 0;
     for(auto [key, value] : values) {
       contentSize += value->getSizeInBytes() + this->keyLen;
     }
     return contentSize;
   }
 
-  int StrictDocument::getSizeInBytes() {
+  uint32_t StrictDocument::getSizeInBytes() {
     int headerSize = sizeof(DocumentHeader_t);
     int bodySize = this->getContentSize();
     return headerSize + bodySize;
@@ -119,5 +119,10 @@ namespace db {
 
       this->values[key] = value;
     }
+  }
+
+  Document *StrictDocument::clone() {
+    return new StrictDocument(*this);
+    // return this;
   }
 }

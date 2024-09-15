@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 #define DEFAULT_DATA_DIR "./data"     // Where data is stored
-#define DEFAULT_BLOCK_SIZE 4          // Size of block in terms of page size
+#define DEFAULT_BLOCK_SIZE 2          // Size of block in terms of page size
 
 // Read only class
 

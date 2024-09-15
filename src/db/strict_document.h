@@ -22,7 +22,7 @@ namespace db {
      * (excluding the header).
      * @return The size of the content in bytes.
      */
-    int getContentSize();
+    uint32_t getContentSize();
 
   public:
     /**
@@ -100,7 +100,7 @@ namespace db {
      *
      * @return The size of the document in bytes.
      */
-    int getSizeInBytes() override;
+    uint32_t getSizeInBytes() override;
 
     /**
      * @brief Serializes the strict document into a byte vector.
@@ -133,6 +133,8 @@ namespace db {
      */
     void readBytes(io::ByteVector::iterator &start,
                    io::ByteVector::iterator end) override;
+
+    Document *clone() override;
   };
 
 }

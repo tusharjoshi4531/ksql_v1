@@ -9,11 +9,14 @@ build:
 	src/data/double.cpp \
 	src/data/chars.cpp \
 	src/data/data_type_factory.cpp \
+	src/db/document_factory.cpp \
 	src/db/document.cpp \
+	src/db/page.cpp \
 	src/db/strict_document.cpp \
 	src/test/storage/double_test.cpp \
 	src/test/storage/string_test.cpp \
 	src/test/storage/document_test.cpp \
+	src/test/storage/page_test.cpp \
 	-o main.out
 
 run:

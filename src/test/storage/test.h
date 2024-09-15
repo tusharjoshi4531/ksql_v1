@@ -8,4 +8,5 @@ namespace test {
   void testGenericString();
   void testString();
   void testStrictDocument();
+  void testPage();
 }

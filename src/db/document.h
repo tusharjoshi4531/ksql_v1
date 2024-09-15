@@ -21,6 +21,13 @@ namespace db {
    */
   class Document {
   public:
+#pragma pack(push, 1)
+    struct DocumentHeader_t {
+      uint64_t doc_id;
+      uint8_t doc_type;
+      uint32_t content_size;
+    };
+#pragma pack(pop)
     /**
      * @typedef KVStore_t
      * @brief Type definition for the key-value store.
@@ -131,7 +138,7 @@ namespace db {
      * @brief Calculates and returns the size of the document in bytes.
      * @return The size of the document in bytes.
      */
-    virtual int getSizeInBytes() = 0;
+    virtual uint32_t getSizeInBytes() = 0;
 
     /**
      * @brief Serializes the document into a byte vector.
@@ -154,6 +161,11 @@ namespace db {
     readBytes(io::ByteVector::iterator &start, io::ByteVector::iterator end)
       = 0;
 
+    /**
+     * @brief Clones document object and returns its pointer
+     */
+    virtual Document *clone() = 0;
+
   protected:
     /**
      * @struct DocumentHeader_t
@@ -162,13 +174,6 @@ namespace db {
      * This structure is packed to ensure tight memory alignment and includes
      * the document's ID, type, and content size.
      */
-#pragma pack(push, 1)
-    struct DocumentHeader_t {
-      uint64_t doc_id;
-      uint8_t doc_type;
-      uint32_t content_size;
-    };
-#pragma pack(pop)
 
     KVStore_t values;
     ConstraintStore_t constraints;

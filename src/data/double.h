@@ -25,6 +25,7 @@ namespace data {
 #pragma pack(push, 1)
     struct DoubleData_t {
       uint8_t type;
+      double value;
     };
 #pragma pack(pop)
 

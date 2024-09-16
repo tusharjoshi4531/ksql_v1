@@ -6,17 +6,12 @@
 #include <iostream>
 
 namespace db {
-  Page::Page() {
+  Page::Page(int no) {
+    this->no = no;
     auto config = io::DataConfig::getInstance();
 
-    id = 0;
     remainingSpace = config.getBlockSizeBytes() - this->headerSize;
   }
-  // Page::~Page() {
-  //   for(auto doc : docs) {
-  //     delete doc;
-  //   }
-  // }
 
   void Page::addDoc(Document *doc) {
     uint32_t docSize = doc->getSizeInBytes();
@@ -24,7 +19,6 @@ namespace db {
     if(docSize > remainingSpace) {
       throw std::runtime_error("Doc size too large for page");
     }
-    // std::cout << "TEST" << std::endl;
     Document *docCopy = doc->clone();
     this->docs.push_back(docCopy);
     // return;
@@ -40,7 +34,7 @@ namespace db {
     uint32_t contentSize = blockSize - headerSize;
 
     PageHeader_t header;
-    header.id = this->id;
+    header.no = this->no;
     header.rem_space = this->remainingSpace;
 
     int off = 0;
@@ -82,13 +76,12 @@ namespace db {
     std::advance(curr, this->headerSize);
     remToRead -= headerSize;
 
-    this->id = header.id;
+    this->no = header.no;
     this->remainingSpace = header.rem_space;
 
     remToRead -= this->remainingSpace;
 
     while(remToRead) {
-      std::cout << std::distance(curr, fin) << std::endl;
       Document *readDocument = DocumentFactory::readDocument(curr, fin);
 
       this->docs.push_back(readDocument);
@@ -97,4 +90,5 @@ namespace db {
   }
 
   std::vector<Document *> Page::getDocs() { return this->docs; }
+  uint32_t Page::getNo() { return this->no; }
 }

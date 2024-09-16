@@ -20,17 +20,18 @@ namespace data {
      * @struct IntegerData_t
      * @brief A structure to represent the serialized form of an integer value.
      *
-     * This structure contains the type information (as a uint8_t) and the actual
-     * 32-bit integer value. It is packed to ensure tight memory alignment.
+     * This structure contains the type information (as a uint8_t) and the
+     * actual 32-bit integer value. It is packed to ensure tight memory
+     * alignment.
      */
 #pragma pack(push, 1)
     struct IntegerData_t {
-      uint8_t type;  
-      int32_t value; 
+      uint8_t type;
+      int32_t value;
     };
 #pragma pack(pop)
 
-    int32_t val; 
+    int32_t val;
 
   public:
     /**
@@ -77,6 +78,18 @@ namespace data {
      * @return The size of the serialized data in bytes.
      */
     int getSizeInBytes() override;
+
+    /**
+     * @brief Converts data to string.
+     * @return String representation of data.
+     */
+    std::string toString() override;
+
+    /**
+     * @brief Checks it equals another data
+     * @return The size of the serialized data in bytes.
+     */
+    bool equals(DataType *data) override;
 
     /**
      * @brief Assignment operator for Integer.

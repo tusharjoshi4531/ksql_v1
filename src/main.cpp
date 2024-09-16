@@ -8,6 +8,6 @@
 int main() {
   // test::testDouble();
   // test::testString();
-  test::testPage();
+  test::testCollection();
   return 0;
 }

@@ -62,6 +62,15 @@ namespace data {
 
   int Double::getSizeInBytes() { return sizeof(DoubleData_t); }
 
+  std::string Double::toString() {
+    return std::to_string(this->val);
+  }
+
+  bool Double::equals(DataType *data) {
+    return (data->getType() == this->getType())
+           && (static_cast<Double *>(data)->getVal() == this->getVal());
+  }
+
   // Assignemt operator
   Double Double::operator=(const Double &a) const { return Double(a.val); }
 

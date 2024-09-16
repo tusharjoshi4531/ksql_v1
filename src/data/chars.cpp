@@ -75,6 +75,15 @@ namespace data {
 
   std::string Chars::getVal() { return this->value; }
 
+  std::string Chars::toString() {
+    return this->value;
+  }
+
+  bool Chars::equals(DataType *data) {
+    return (data->getType() == this->getType())
+           && (static_cast<Chars *>(data)->getVal() == this->getVal());
+  }
+
   // Assignemt operator
   Chars Chars::operator=(const Chars &a) const {
     return Chars(a.len, a.value);

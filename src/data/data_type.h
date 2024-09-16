@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 #include <cstdint>
 #include "../storage/common.h"
 
@@ -23,5 +24,8 @@ namespace data {
     readBytes(io::ByteVector::iterator &, io::ByteVector::iterator)
       = 0;                            // Reads from byte vector iterators
     virtual int getSizeInBytes() = 0; // Gets the size of the object in bytes
+    virtual std::string toString() = 0; // Converts data to string format
+    virtual bool equals(DataType *) = 0; // Check equals
+
   };
 }

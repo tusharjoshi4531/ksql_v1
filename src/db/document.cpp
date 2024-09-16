@@ -57,4 +57,14 @@ namespace db {
   void Document::set(std::string key, data::DataType *value) {
     this->values[key] = value;
   }
+
+  std::string Document::toString() {
+    std::string str;
+    str = "{\n";
+    for(auto [k, v] : this->values) {
+      str += k + ": " + v->toString() + ",\n";
+    }
+    str += "}\n";
+    return str;
+  }
 }

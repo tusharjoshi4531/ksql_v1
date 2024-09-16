@@ -135,6 +135,12 @@ namespace db {
     virtual void set(std::string key, data::DataType *value);
 
     /**
+     * @brief Converts the document to a string
+     * @return Converted document.
+     */
+    virtual std::string toString();
+
+    /**
      * @brief Calculates and returns the size of the document in bytes.
      * @return The size of the document in bytes.
      */

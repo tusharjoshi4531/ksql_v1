@@ -4,4 +4,5 @@ namespace test {
 
   void testStrictDocument();
   void testPage();
+  void testCollection();
 }

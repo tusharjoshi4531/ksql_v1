@@ -78,6 +78,18 @@ namespace data {
     int getSizeInBytes() override;
 
     /**
+     * @brief Converts data to string.
+     * @return String representation of data.
+     */
+    std::string toString() override;
+
+    /**
+     * @brief Checks it equals another data
+     * @return The size of the serialized data in bytes.
+     */
+    bool equals(DataType *data) override;
+
+    /**
      * @brief Assignment operator for Double.
      * @param other The Double object to assign.
      * @return A new Double object with the assigned value.

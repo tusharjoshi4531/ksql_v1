@@ -42,7 +42,7 @@ namespace data {
     if(type != INTEGER) {
       throw std::runtime_error("Data type doesnot match integer");
     }
-  
+
     if(std::distance(curr, fin) < this->getSizeInBytes()) {
       throw std::runtime_error("Insufficient bytes to read integer");
     }
@@ -55,6 +55,15 @@ namespace data {
   }
 
   int Integer::getSizeInBytes() { return sizeof(IntegerData_t); }
+
+  std::string Integer::toString() {
+    return std::to_string(this->val);
+  }
+
+  bool Integer::equals(DataType *data) {
+    return (data->getType() == this->getType())
+           && (static_cast<Integer *>(data)->getVal() == this->getVal());
+  }
 
   // Assignemt operator
   Integer Integer::operator=(const Integer &a) const { return Integer(a.val); }

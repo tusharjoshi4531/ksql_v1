@@ -21,7 +21,7 @@ namespace test {
     using db::Page;
     using db::StrictDocument;
 
-    Page page;
+    Page page(0);
 
     Document::ConstraintStore_t constraints = {
       {"name", data::CHARS}, {"age", data::INTEGER}, {"height", data::DOUBLE}};
@@ -82,7 +82,7 @@ namespace test {
 
     reader.readData(readBytes, 0);
 
-    Page readPage;
+    Page readPage(0);
     auto it = readBytes.begin();
     readPage.readBytes(it, readBytes.end());
 

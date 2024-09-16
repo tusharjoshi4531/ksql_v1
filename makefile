@@ -12,11 +12,14 @@ build:
 	src/db/document_factory.cpp \
 	src/db/document.cpp \
 	src/db/page.cpp \
+	src/db/page_io.cpp \
+	src/db/collection.cpp \
 	src/db/strict_document.cpp \
 	src/test/storage/double_test.cpp \
 	src/test/storage/string_test.cpp \
 	src/test/db/document_test.cpp \
 	src/test/db/page_test.cpp \
+	src/test/db/collection_test.cpp \
 	-o main.out
 
 run:

@@ -94,6 +94,7 @@ namespace test {
     for(auto value : values) {
       collection.create(value);
     }
+    collection.commit();
 
     std::cout << "Number of pages: " << collection.getNumPages() << std::endl;
 

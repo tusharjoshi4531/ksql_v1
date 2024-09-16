@@ -14,6 +14,7 @@ build:
 	src/db/page.cpp \
 	src/db/page_io.cpp \
 	src/db/collection.cpp \
+	src/db/transaction.cpp \
 	src/db/strict_document.cpp \
 	src/test/storage/double_test.cpp \
 	src/test/storage/string_test.cpp \

@@ -12,18 +12,23 @@ namespace db {
   Collection<T>::Collection(Document::ConstraintStore_t constraints,
                             std::string fileName)
       : remainingSpaces({}), constraints(constraints), numPages(0),
-        fileName(fileName), pageIo(PageIO(fileName)) {
+        fileName(fileName), pageIo(PageIO(fileName)),
+        transaction(Transaction(fileName)) {
     auto config = io::DataConfig::getInstance();
     this->pageSize = config.getBlockSizeBytes() - sizeof(Page::PageHeader_t);
   }
 
   template <typename T>
   void Collection<T>::create(Document::KVStore_t &items) {
+    // Initialize Transaction
+    if(!this->transaction.isActive()) {
+      this->transaction = Transaction(this->fileName);
+    }
+
     Document *doc = static_cast<Document *>(new T(this->constraints, items));
 
     uint32_t docSize = doc->getSizeInBytes();
 
-    // Find empty page
     auto it = remainingSpaces.lower_bound({docSize, -1});
     uint32_t remSize, pageNo;
     if(it != remainingSpaces.end()) {
@@ -39,13 +44,19 @@ namespace db {
     if(pageNo > this->numPages) {
       page = new Page(pageNo);
     } else {
-      page = pageIo.readPage(pageNo);
+
+      // Check in transaction
+      page = this->transaction.getDirtyPage(pageNo);
+
+      // Read otherwise
+      if(!page) {
+        page = pageIo.readPage(pageNo);
+      }
     }
-    // return;
 
     page->addDoc(doc);
 
-    this->pageIo.writePage(page);
+    this->transaction.addDirtyPage(page);
 
     remainingSpaces.insert({remSize - docSize, pageNo});
 
@@ -75,6 +86,10 @@ namespace db {
 
   template <typename T> uint32_t Collection<T>::getNumPages() {
     return this->numPages;
+  }
+
+  template <typename T> void Collection<T>::commit() {
+    this->numPages = std::max(this->transaction.commit(), this->numPages);
   }
 
   template class Collection<StrictDocument>;

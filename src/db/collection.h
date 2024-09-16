@@ -2,6 +2,7 @@
 
 #include "document.h"
 #include "page_io.h"
+#include "transaction.h"
 
 #include <type_traits>
 #include <set>
@@ -20,6 +21,8 @@ namespace db {
 
     uint32_t pageSize;
 
+    Transaction transaction;
+
   public:
 #pragma pack(push, 1)
     struct CollectionMetaData_t {
@@ -32,6 +35,8 @@ namespace db {
 
     void create(Document::KVStore_t &items);
     Document *findOne(std::string key, data::DataType *value);
+    void commit();
+
     uint32_t getNumPages();
   };
 }

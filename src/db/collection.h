@@ -32,5 +32,6 @@ namespace db {
 
     void create(Document::KVStore_t &items);
     Document *findOne(std::string key, data::DataType *value);
+    uint32_t getNumPages();
   };
 }

@@ -14,6 +14,8 @@
 #include "../../storage/common.h"
 
 #include <iostream>
+#include <algorithm>
+#include <random>
 
 namespace test {
   using namespace db;
@@ -66,6 +68,44 @@ namespace test {
       std::cout << "NULL" << std::endl;
     } else {
       std::cout << doc2->toString() << std::endl;
+    }
+  }
+
+  void
+  testStrictCollectionStress(int n, std::vector<Document::KVPair_t> &queries) {
+    Document::ConstraintStore_t constraints = {{"first", data::INTEGER},
+                                               {"second", data::CHARS},
+                                               {"third", data::DOUBLE}};
+    Collection<db::StrictDocument> collection(constraints, "data.dat");
+
+    std::vector<Document::KVStore_t> values(n);
+
+    for(int i = 0; i < n; i++) {
+      values[i]
+        = Document::KVStore_t({{"first", new data::Integer(i)},
+                               {"second", new data::Chars(100, "SecondValue")},
+                               {"third", new data::Double(i * 4.0 / 3)}});
+    }
+
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(values.begin(), values.end(), g);
+
+    for(auto value : values) {
+      collection.create(value);
+    }
+
+    std::cout << "Number of pages: " << collection.getNumPages() << std::endl;
+
+    for(auto [k, v] : queries) {
+      auto doc = collection.findOne(k, v);
+
+      std::cout << "Query: " << k << " == " << v->toString() << std::endl;
+      if(doc) {
+        std::cout << doc->toString() << std::endl;
+      } else {
+        std::cout << "NULL\n" << std::endl;
+      }
     }
   }
 }

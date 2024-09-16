@@ -73,5 +73,9 @@ namespace db {
     return result;
   }
 
+  template <typename T> uint32_t Collection<T>::getNumPages() {
+    return this->numPages;
+  }
+
   template class Collection<StrictDocument>;
 }
